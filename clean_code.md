@@ -1,4 +1,4 @@
-#Avoiding Code Duplication
+# Avoiding Code Duplication
 
 ### Situation
 In my previous experience I had to refactor most of my code due to repeating functions and plain out copying and pasting the same code over and over again because it was easier to compared to just making a function. I had this experience when I created my data visualization website where I had to create multiple charts with somewhat of a similar draw function.
