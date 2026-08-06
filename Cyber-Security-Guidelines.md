@@ -1,6 +1,7 @@
 # Company Policies
-## Cyber Security
+**Cyber Security**
 
+## Reflection
 ### 1. What security measures do you currently follow, and where can you improve?
 In my current development workflows, I adhere to the principle of least privilege, especially when configuring access in Active Directory (ADDS) and managing Group Policy Objects. At the application level, I ensure sensitive credentials and API keys are kept out of source control by utilizing environment variables across my Next.js, Laravel, and Python projects. When interacting with databases like MySQL and MongoDB, I use parameterized queries and ORMs to prevent SQL/NoSQL injection. My background in developing threat detection models, specifically working with NLP for smishing detection, has also ingrained a strong awareness of data sanitization and input validation.
 While I handle basic application security well, I want to improve my integration of automated security testing directly into the CI/CD pipeline. I also aim to deepen my practical application of the OWASP Top 10 across all the frameworks I use, ensuring that secure coding is uniform whether I am writing API endpoints in Express.js or building out backend services in C# and .NET.
@@ -13,3 +14,12 @@ I use a reputable password manager to generate, store, and auto-fill complex, un
 
 ### 4. What would you do if you suspected a security breach or suspicious activity on your account?
 I would try to isolate the breach by disconnecting the device from the network. Next, I would report the issue with the internal IT and security team. Lastly, I would change the account passwords, API keys, database credentials and ETC to contain the breach. 
+
+# Task 
+**Passwords & 2FA:** Verified that all Focus Bear work accounts use strong, unique passwords and enabled Two-Factor Authentication (2FA) via an authenticator app.
+*   **Password Storage:** Reviewed password storage methods and confirmed the use of a secure password manager to generate, store, and auto-fill all credentials.
+*   **Device Security:** Configured both my work computer and mobile phone to automatically lock and require a password or biometric login after 3 minutes of inactivity.
+*   **Document net cyber security habit:** I will consistently use 2FA and store my all of my password in a password manager that way i can have a hihgly secure password and it is easier for me to manage and keep track of my passwords. 
+
+
+
