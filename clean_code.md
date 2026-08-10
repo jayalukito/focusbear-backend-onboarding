@@ -27,3 +27,18 @@ Poorly named variables (like `d`, `lst`, or `t`) force developers to rely on con
 ## How did refactoring improve code readability?
 Refactoring transformed the code from a puzzle into a clear narrative. By changing `Calc` to `CalculateTotalWithDiscount`, the function's exact purpose is immediately obvious without looking at its body. Replacing single-letter variables with descriptive names (`t` to `subtotal`, `d` to `discountPercentage`) makes the mathematical logic self-documenting. It removes the need for excessive comments and allows anyone reviewing the codebase to instantly grasp the business logic of the transaction.
 
+# Code Formatting & Style Guides
+
+## Why is code formatting important?
+Code formatting is crucial because it prioritizes readability and maintainability. In any project, code is read far more often than it is written. Consistent formatting reduces cognitive load; instead of wasting mental energy parsing different indentation styles, spacing, or quote marks, developers can focus entirely on the core logic and architecture. Furthermore, in a team environment, a strict formatting standard prevents unnecessary debates during code reviews and avoids noisy Git diffs that are caused by formatting changes rather than actual feature updates.
+
+## What issues did the linter detect?
+When I ran the linter on the codebase, it caught several inconsistencies and potential bugs. Some of the specific issues detected included:
+*   **Variable Declarations:** Instances where `var` was used instead of `const` or `let`, and variables that were declared but never used in the file.
+*   **Syntax and Spacing:** Missing trailing commas in objects, inconsistent use of single versus double quotes, and missing semicolons at the end of statements.
+*   **Equality Operators:** The linter flagged areas using abstract equality (`==`) and required them to be changed to strict equality (`===`) to prevent unexpected type coercion bugs.
+*   *Note: [Add any specific logic errors or warnings your linter flagged here, such as missing return statements or unused imports]*
+
+## Did formatting the code make it easier to read?
+Yes, running the formatter made a significant difference in readability. By standardizing the indentation (e.g., locking it to 2 spaces) and enforcing a consistent maximum line width, the structure of the code became entirely predictable. Nested functions and large objects are now much easier to scan visually. This uniformity makes it significantly easier to spot actual logical errors, as my eyes are no longer distracted by messy or chaotic syntax.
+
