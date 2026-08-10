@@ -42,3 +42,72 @@ When I ran the linter on the codebase, it caught several inconsistencies and pot
 ## Did formatting the code make it easier to read?
 Yes, running the formatter made a significant difference in readability. By standardizing the indentation (e.g., locking it to 2 spaces) and enforcing a consistent maximum line width, the structure of the code became entirely predictable. Nested functions and large objects are now much easier to scan visually. This uniformity makes it significantly easier to spot actual logical errors, as my eyes are no longer distracted by messy or chaotic syntax.
 
+# Writing Small, Focused Functions #122 
+
+To demonstrate the value of small, single-purpose functions, here is an example of a monolithic function that does too much, followed by its refactored version.
+
+**Before: A complex, multi-purpose function**
+```javascript
+// This function validates the cart, calculates totals, applies taxes, and updates the UI.
+function processCheckout(cart) {
+  if (!cart || cart.items.length === 0) {
+    console.error('Cart is empty');
+    return;
+  }
+
+  let subtotal = 0;
+  for (let i = 0; i < cart.items.length; i++) {
+    subtotal += cart.items[i].price * cart.items[i].quantity;
+  }
+
+  let tax = subtotal * 0.10;
+  let total = subtotal + tax;
+
+  if (total > 100) {
+    total = total - 10; // Apply a $10 discount
+  }
+
+  document.getElementById('total-display').innerText = `$${total.toFixed(2)}`;
+  console.log('Checkout complete');
+}
+```
+
+**After: Refactored into single-purpose functions**
+```javascript
+// Each function now has a single, clear responsibility.
+const isCartValid = (cart) => cart && cart.items.length > 0;
+
+const calculateSubtotal = (items) => {
+  return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+};
+
+const calculateFinalTotal = (subtotal) => {
+  const tax = subtotal * 0.10;
+  let total = subtotal + tax;
+  return total > 100 ? total - 10 : total;
+};
+
+const updateDisplay = (elementId, amount) => {
+  document.getElementById(elementId).innerText = `$${amount.toFixed(2)}`;
+};
+
+// The main function is now just an orchestrator that reads like a story.
+function processCheckout(cart) {
+  if (!isCartValid(cart)) {
+    console.error('Cart is empty');
+    return;
+  }
+  const subtotal = calculateSubtotal(cart.items);
+  const total = calculateFinalTotal(subtotal);
+  updateDisplay('total-display', total);
+}
+```
+
+## Why is breaking down functions beneficial?
+Breaking down functions into smaller, single-purpose units applies the Single Responsibility Principle, which yields several major benefits. First, it vastly improves testability; writing unit tests for a function that only calculates a total is much easier than testing a function that calculates totals, connects to a database, and modifies the DOM simultaneously. Second, it promotes reusability. If a utility function is isolated, it can be imported and used elsewhere in the application without duplicating code. Finally, small functions serve as their own documentation. When a function is named well and does exactly what its name implies, you don't need extensive comments to explain the underlying logic.
+
+## How did refactoring improve the structure of the code?
+Refactoring shifted the code from a single, procedural monolith into a modular, declarative structure. The main orchestrator function now reads almost like plain English, simply calling sub-routines step-by-step. It abstracted away the implementation details (like loops and math operators) from the high-level logic. This structure makes debugging significantly faster because if a calculation is wrong, I know exactly which isolated function to check, rather than hunting through a massive 50-line block of code.
+
+
+
