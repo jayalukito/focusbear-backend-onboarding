@@ -23,3 +23,16 @@ I learned how these conflicts would most likely happen in real life development 
 *   **Partial Commits:** When you have edited several files (e.g., refactored a database module and updated a UI component), but want to split them into separate, distinct commits for better clarity during code reviews.
 *   **Incremental Reviewing:** When you want to stage verified, working code file-by-file while continuing to test or tweak other parts of the codebase.
 *   **Organizing Work:** When preparing a clean, structured set of changes right before crafting a detailed commit message.
+
+
+# Git Understanding: Branching vs. Pushing to Main
+**Role:** Developer Intern
+
+## 1. Why is pushing directly to main problematic?
+Pushing directly to the main branch is problematic because it bypasses all quality control and peer review. The main branch is typically the stable "source of truth" and often deploys directly to production environments. If untested, buggy, or incomplete code is pushed straight to main, it can immediately break the live application for users and disrupt the local environments of the entire development team who rely on main as their baseline.
+
+## 2. How do branches help with reviewing code?
+Branches create a safe, isolated workspace where new features or bug fixes can be developed without destabilizing the main codebase. Once the work on a branch is complete, a developer can open a Pull Request (PR). This PR isolates the exact lines of code that were changed, allowing other team members to leave comments, catch potential bugs, and ensure the code meets formatting and security standards before it is ever integrated into the main project.
+
+## 3. What happens if two people edit the same file on different branches?
+If two developers edit the exact same line or section of a file in their separate branches, Git will not know which version is the correct one to keep when they attempt to merge. This creates a "merge conflict." Git will halt the merge process, mark the conflicting lines directly in the file, and require a human developer to manually review the conflict, choose the correct code to keep, and save the resolution before the merge can be completed.
