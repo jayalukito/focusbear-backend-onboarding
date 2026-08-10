@@ -298,5 +298,14 @@ The original code suffered from "Happy Path Programming." It completely ignored 
 ### How does handling errors improve reliability?
 Handling errors directly improves reliability by making the codebase robust and predictable. By using Guard Clauses, the function immediately rejects bad data before it can cause harm. This protects the state of the application—such as preventing a database from saving a corrupted total. Furthermore, throwing specific, descriptive exceptions (like `ArgumentException` or `InvalidOperationException`) makes unit testing much more effective. Instead of tests mysteriously failing, they can assert that the correct exceptions are thrown for specific edge cases, ensuring the system behaves predictably under stress.
 
+# Writing Unit Tests for Clean Code #117
+
+## Reflections
+
+### What was the issue with the original code?
+The original code suffered from "Happy Path Programming." It completely ignored edge cases, assuming that the `currentTransaction` object would always exist and that the `refundAmount` would always be a logical number. This is dangerous because passing a `null` transaction would trigger a catastrophic `NullReferenceException`, crashing the application. Even worse, passing a negative number would mathematically result in *adding* money to the transaction's total instead of subtracting it, silently corrupting the financial data without throwing any errors at all.
+
+### How does handling errors improve reliability?
+Handling errors directly improves reliability by making the codebase robust and predictable. By using Guard Clauses, the function immediately rejects bad data before it can cause harm. This protects the state of the application—such as preventing a database from saving a corrupted total. Furthermore, throwing specific, descriptive exceptions (like `ArgumentException` or `InvalidOperationException`) makes unit testing with NUnit much more effective. Instead of tests mysteriously failing, I can use `Assert.Throws<ExceptionType>()` in my NUnit test suites to verify exactly how the application reacts to bad data, ensuring the system behaves predictably under stress.
 
 
