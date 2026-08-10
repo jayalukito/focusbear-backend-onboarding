@@ -385,104 +385,6 @@ git log main..origin/main
 git merge origin/main
 Using git pull is perfectly fine for your daily workflow, but knowing how to use fetch and merge separately is a great tool to have when you are working on a large team and want to review incoming code first!
 
-i used git log how do i get out ?
-
-To get out of git log, simply press the q key on your keyboard!
-
-What's happening?
-When your commit history is too long to fit on a single screen, Git automatically opens it in a "pager" program (usually one called less).
-
-Here are a few handy keys you can use while you are in that view before you quit:
-
-Spacebar: Scroll down one full page.
-
-Enter or Return: Scroll down one line at a time.
-
-q: Quit the log and return to your normal terminal prompt.
-
-how do i executet git cherry pick ??
-
-Here is the exact step-by-step process to execute a git cherry-pick.
-
-Step 1: Find the Commit Hash
-First, you need the unique ID (hash) of the commit you want to copy.
-
-Go to the branch that contains the commit you want.
-
-Run git log --oneline to see a compact version of your history.
-
-Copy the short alphanumeric hash next to your target commit (e.g., a1b2c3d).
-
-Press q to exit the log.
-
-Step 2: Switch to Your Target Branch
-Move to the branch where you want the new code to end up.
-
-Bash
-git checkout main
-(Replace main with the name of your specific branch if you are moving it somewhere else).
-
-Step 3: Run the Cherry-Pick Command
-Execute the command using the hash you copied in Step 1.
-
-Bash
-git cherry-pick a1b2c3d
-What Happens Next?
-If it works perfectly: Git automatically creates a new commit on your current branch with the exact same changes and the exact same commit message. You are done!
-
-If there is a conflict: Sometimes the changes clash with code currently on your branch. Git will pause the cherry-pick and tell you there is a merge conflict.
-
-Open your files in VS Code and resolve the conflicts (remove the <<<<<<< markers).
-
-Save the files.
-
-Stage the files by running git add .
-
-Finish the process by running git cherry-pick --continue
-
-im using git bash how do i exit the git log ??
-
-To exit git log in Git Bash, the command is exactly the same: simply press the q key on your keyboard.
-
-Git Bash uses the same text pager program (called less) as other terminals to display long outputs. Pressing q will immediately quit the pager and return you to the normal command prompt where you can type your next command.
-
-Write reflections in git_understanding.md:
-
-What does each command do?
-
-When would you use it in a real project (hint: these are all really important in long running projects with multiple developers)?
-
-What surprised you while testing these commands?
-
-
-
-Commit and push your changes to GitHub.
-
-
-
-can you help me write this like before
-
-Your reflections on these advanced Git commands have been successfully generated!
-
-MD icon
-git_understanding
- MD 
-Open
-I made sure to format it exactly like your previous files, incorporated realistic development scenarios (like fixing React components or NUnit tests), and ensured there are absolutely zero citations.
-
-Next Steps for Your Local Machine:
-Since we are updating the git_understanding.md file you already created, just make sure this new content replaces or is appended to the bottom of the existing file in your local repository.
-
-Open your terminal and run the following commands to commit and push your work:
-
-Bash
-git add git_understanding.md
-git commit -m "Add reflections on advanced Git commands"
-git push origin main
-
-
-
-Gemini is AI and can make mistakes.
 
 # Git Understanding: Advanced Commands Reflection
 **Role:** Developer Intern
@@ -506,5 +408,31 @@ Gemini is AI and can make mistakes.
 *   **What it does:** Annotates a file line-by-line, showing exactly which developer last modified each line, the timestamp, and the commit hash associated with the change.
 *   **When to use it in a real project:** When encountering a confusing piece of code—like a strange machine learning parameter configuration or a legacy .NET setup—and needing context. Instead of guessing, I can see exactly who wrote it and ask them directly *why* it was implemented that way.
 *   **What surprised me:** How granular the tracking is. It feels slightly intimidating that every single keystroke is permanently tied to my name, but it highlights why writing clear, descriptive commit messages is so crucial for the rest of the team.
-git_understanding.md
-Displaying git_understanding.md.
+
+# Git Understanding: Advanced Commands Reflection
+**Role:** Developer Intern
+
+## 1. `git checkout main -- <file>`
+*   **What it does:** Reverts a specific file in your current working directory back to its exact state in the `main` branch, discarding any local modifications made to just that file.
+*   **When to use it in a real project:** If I am building out a complex feature and experimenting with a C# backend controller or a React component, and I completely mess up the logic in one file. Instead of undoing all my work across the whole branch, I can reset just that single file back to the stable baseline while keeping my other file changes intact.
+*   **What surprised me:** It executes instantly without asking for confirmation. It is incredibly fast, but it means I need to be absolutely sure before running it so I don't accidentally wipe out good code.
+
+## 2. `git cherry-pick <commit>`
+*   **What it does:** Grabs a specific commit from another branch and applies those exact changes onto your current branch, without merging the entire branch over.
+*   **When to use it in a real project:** If another developer fixes a critical bug (like a failing NUnit test or a database connection issue) on their separate feature branch, I can cherry-pick just their bug-fix commit into my branch to unblock my own work, without pulling in their unfinished features.
+*   **What surprised me:** That it creates an entirely new commit hash on your current branch. It copies the *changes*, not the literal commit itself, which makes sense for keeping branch histories separate.
+
+## 3. `git log`
+*   **What it does:** Displays the chronological history of all commits in the repository, showing the author, date, message, and unique commit hash.
+*   **When to use it in a real project:** It is essential for tracking down when a specific feature was merged, understanding the timeline of a project, or finding the exact commit hash needed for a cherry-pick or a revert.
+*   **What surprised me:** How overwhelming the default output can be in a project with multiple developers. It quickly taught me that using flags like `--oneline` or `--graph` is absolutely mandatory to make the history readable.
+
+## 4. `git blame <file>`
+*   **What it does:** Annotates a file line-by-line, showing exactly which developer last modified each line, the timestamp, and the commit hash associated with the change.
+*   **When to use it in a real project:** When encountering a confusing piece of code—like a strange machine learning parameter configuration or a legacy .NET setup—and needing context. Instead of guessing, I can see exactly who wrote it and ask them directly *why* it was implemented that way.
+*   **What surprised me:** How granular the tracking is. It feels slightly intimidating that every single keystroke is permanently tied to my name, but it highlights why writing clear, descriptive commit messages is so crucial for the rest of the team.
+
+## 5. `git bisect`
+*   **What it does:** It performs a binary search through the repository's commit history to pinpoint the exact commit that introduced a bug or regression.
+*   **When to use it in a real-world debugging situation:** When building tailored solutions for clients and a previously working feature unexpectedly breaks. For example, if a C# backend endpoint was working perfectly on Monday but is suddenly failing NUnit tests by Friday after dozens of new commits have been merged, `git bisect` finds the exact breaking commit by testing just a handful of halfway points.
+*   **How it compares to manually reviewing commits:** It is exponentially faster. Instead of manually testing commits one by one in a tedious linear fashion, `git bisect` cuts the remaining commits in half with every step. It turns checking 100 commits into a maximum of 7 tests, and can even be fully automated using `git bisect run`.
