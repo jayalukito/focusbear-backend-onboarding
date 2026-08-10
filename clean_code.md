@@ -1,13 +1,120 @@
-# Understanding Clean Code Principles #125
+# Clean Code Principles and Reflection #125
+
+## Essential Clean Code Principles
+To write scalable and professional code, it is important to follow these five core principles:
+
+1. **Simplicity:** Code should do exactly what it needs to do without unnecessary complexity. Over-engineering makes code harder to understand, debug, and test. The best solution is often the most straightforward one.
+2. **Readability:** Code is read exponentially more often than it is written. It should be written in a way that is easy for humans to understand, using clear, descriptive naming conventions and a logical, predictable structure.
+3. **Maintainability:** Code should be easy to update, fix, or extend in the future. Highly coupled code is brittle; maintainable code allows developers to add new features without breaking existing functionality.
+4. **Consistency:** Using a uniform style, naming convention, and architectural pattern throughout the codebase reduces cognitive load. When all code looks the same, developers can focus on the logic rather than the syntax.
+5. **Efficiency:** While readability is usually the top priority, clean code should also perform its tasks optimally, avoiding unnecessary loops, redundant calculations, or wasteful memory usage.
+
+---
+
+## Personal Reflection: The Cost of Copy-Pasting
 
 ### Situation
-In my previous experience I had to refactor most of my code due to repeating functions and plain out copying and pasting the same code over and over again because it was easier to compared to just making a function. I had this experience when I created my data visualization website where I had to create multiple charts with somewhat of a similar draw function.
+In my previous experience, I had to refactor most of my code due to repeating functions and flat-out copying and pasting the same code over and over again because it felt easier compared to just making a reusable function. I had this experience when I created my data visualization website, where I had to create multiple charts with similar draw functions.
 
 ### Problem
-My mistake was instead of creating a parent function with parameters to make the code cleaner I just separated them into multiple folders. Thus the codebase became very monolithic huge and somewhat unreadable.
+My mistake was that instead of creating a parent function with parameters to make the code cleaner, I just separated the duplicated code into multiple folders. Thus, the codebase became very monolithic, huge, and somewhat unreadable. 
 
-#### Reflection / Solution
-So what I did was I used the Extract method and created helper functions to make the code more readable and split the into smaller files and folders according to their functions. However, I also made these helper functions to be usable by other types of charts making them modular thus cleaner and following the principal of DRY
+### Reflection & Solution
+So, what I did was use the Extract Method and created helper functions to make the code more readable, splitting it into smaller files and folders according to their specific functions. However, I also made these helper functions usable by other types of charts, making them modular, cleaner, and strictly following the principle of DRY (Don't Repeat Yourself).
+
+---
+
+## Code Example: Data Visualization Refactoring
+
+### The Messy Code
+Here is an example of what my chart rendering logic looked like before I applied clean code principles. 
+
+```javascript
+// drawBarChart.js
+function drawBarChart(data) {
+  const canvas = document.getElementById('bar-chart');
+  const ctx = canvas.getContext('2d');
+  
+  // Clear and setup background (Repeated)
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#000000';
+  
+  // Draw bars
+  data.forEach((point, index) => {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(index * 40, canvas.height - point.value, 30, point.value);
+  });
+}
+
+// drawLineChart.js
+function drawLineChart(data) {
+  const canvas = document.getElementById('line-chart');
+  const ctx = canvas.getContext('2d');
+  
+  // Clear and setup background (Repeated)
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#000000';
+  
+  // Draw lines
+  ctx.beginPath();
+  data.forEach((point, index) => {
+    ctx.lineTo(index * 40, canvas.height - point.value);
+  });
+  ctx.stroke();
+}
+```
+
+### Why it is hard to read
+This code violates the **principle of DRY** and lacks **maintainability**. The logic to fetch the canvas, initialize the context, and style the background is flat-out copy-pasted into every single chart function. If I wanted to change the background color of my charts from white to light gray, I would have to hunt down every single chart file and update it manually. This makes the codebase unnecessarily bloated and highly prone to bugs if I forget to update one of the files.
+
+### The Clean, Rewritten Version
+By using the Extract Method, I pulled the repetitive setup logic into a single modular helper function.
+
+```javascript
+// chartHelpers.js
+// Extracted helper function to handle repetitive canvas setup
+export function setupChartCanvas(canvasId, bgColor = '#ffffff') {
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#000000';
+  
+  return { canvas, ctx };
+}
+
+// drawBarChart.js
+import { setupChartCanvas } from './chartHelpers.js';
+
+export function drawBarChart(data) {
+  const { ctx, canvas } = setupChartCanvas('bar-chart');
+  
+  data.forEach((point, index) => {
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(index * 40, canvas.height - point.value, 30, point.value);
+  });
+}
+
+// drawLineChart.js
+import { setupChartCanvas } from './chartHelpers.js';
+
+export function drawLineChart(data) {
+  const { ctx, canvas } = setupChartCanvas('line-chart');
+  
+  ctx.beginPath();
+  data.forEach((point, index) => {
+    ctx.lineTo(index * 40, canvas.height - point.value);
+  });
+  ctx.stroke();
+}
+```
+**Improvement:** The codebase is now highly modular. The specific chart functions only handle their unique drawing logic (**Simplicity**), and any future global changes to the chart backgrounds or default strokes only need to be made in one single place (**Maintainability** and **Consistency**).
 
 # Commenting & Documentation #119
 ### When should I add Comments
