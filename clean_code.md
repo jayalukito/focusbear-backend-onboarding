@@ -308,4 +308,93 @@ The original code suffered from "Happy Path Programming." It completely ignored 
 ### How does handling errors improve reliability?
 Handling errors directly improves reliability by making the codebase robust and predictable. By using Guard Clauses, the function immediately rejects bad data before it can cause harm. This protects the state of the application—such as preventing a database from saving a corrupted total. Furthermore, throwing specific, descriptive exceptions (like `ArgumentException` or `InvalidOperationException`) makes unit testing with NUnit much more effective. Instead of tests mysteriously failing, I can use `Assert.Throws<ExceptionType>()` in my NUnit test suites to verify exactly how the application reacts to bad data, ensuring the system behaves predictably under stress.
 
+# Commenting & Documentation #4.5
+
+## Best Practices for Writing Comments
+Writing good comments is an art. The overarching rule is that code should explain *what* it is doing and *how* it is doing it, while comments should explain *why*.
+
+Key best practices include:
+1. **Explain the "Why", not the "What":** Don't write comments that simply repeat what the code is doing. Assume the reader knows the programming language.
+2. **Use XML Documentation for APIs:** In C#, use `///` summary blocks above public classes and methods. This allows IntelliSense to display your documentation when other developers use your methods.
+3. **Document Business Rules and Hacks:** If you implement a weird workaround due to a third-party API limitation, or if a specific magic number is required by a legal business rule, document it.
+4. **Keep Comments Updated:** Outdated comments are worse than no comments at all. They actively lie to the reader.
+
+---
+
+## Code Example: Before and After (C#)
+
+### The Messy Code (Poorly Commented)
+This code suffers from redundant comments, "noise" comments, and comments used to mask poorly named variables.
+
+```csharp
+public class DiscountManager 
+{
+    // Function to calculate discount
+    public double Calc(double p, int t) 
+    {
+        // check if t is 1
+        if (t == 1) 
+        {
+            // multiply p by 0.9 to get the new price
+            return p * 0.9; 
+        }
+        // check if t is 2
+        else if (t == 2) 
+        {
+            // multiply p by 0.8 to get the new price
+            return p * 0.8; 
+        }
+        
+        // return p
+        return p; 
+    }
+}
+```
+
+### The Clean, Refactored Code (Self-Documenting)
+By renaming the variables and using C# XML documentation, the code becomes self-explanatory. The inline comments are entirely removed because the clean code renders them obsolete.
+
+```csharp
+/// <summary>
+/// Manages discount calculations for the POS system.
+/// </summary>
+public class DiscountManager 
+{
+    /// <summary>
+    /// Applies the appropriate discount rate based on the customer's membership tier.
+    /// </summary>
+    /// <param name="originalPrice">The subtotal of the cart before discounts.</param>
+    /// <param name="membershipTier">1 for Standard Member, 2 for VIP.</param>
+    /// <returns>The final price after the discount is applied.</returns>
+    public double ApplyMembershipDiscount(double originalPrice, int membershipTier) 
+    {
+        // VIP members receive a 20% promotional discount (Approved by Marketing: Q3 Campaign)
+        if (membershipTier == 2) 
+        {
+            return originalPrice * 0.8; 
+        }
+        
+        if (membershipTier == 1) 
+        {
+            return originalPrice * 0.9; 
+        }
+        
+        return originalPrice; 
+    }
+}
+```
+
+---
+
+## Reflections
+
+### When should you add comments?
+I should add comments when I need to explain the reasoning behind a specific technical decision or business rule that cannot be expressed purely through syntax. For example, if I am writing an algorithm and need to apply a very specific mathematical weight, I will write a comment explaining *why* that weight was chosen. Comments are also essential when writing public-facing documentation (like C# XML summaries) so that other developers can understand how to consume my classes and methods without having to read the internal implementation details.
+
+### When should you avoid comments and instead improve the code?
+I should avoid comments when they are just being used as a crutch to explain bad code. A classic rule of clean code is: "Don't comment bad code—rewrite it." If I find myself writing a comment to explain what a variable named `x` or `temp` does, I should instead just rename the variable to `customerAge` or `activeTransaction`. Inline comments that describe exactly what the next line of code does (e.g., `// loop through the array`) are redundant visual noise and should be entirely avoided. Good code should read like well-written prose.
+
+
+
+
 
