@@ -216,5 +216,87 @@ Breaking down functions into smaller, single-purpose units applies the Single Re
 ## How did refactoring improve the structure of the code?
 Refactoring shifted the code from a single, procedural monolith into a modular, declarative structure. The main orchestrator function now reads almost like plain English, simply calling sub-routines step-by-step. It abstracted away the implementation details (like loops and math operators) from the high-level logic. This structure makes debugging significantly faster because if a calculation is wrong, I know exactly which isolated function to check, rather than hunting through a massive 50-line block of code.
 
+# Error Handling and Edge Cases #118
+
+## Strategies for Handling Errors
+Robust applications don't just work when everything goes right; they fail gracefully when things go wrong. Key strategies for handling errors and edge cases include:
+
+1. **Guard Clauses:** These are checks placed at the very beginning of a function to validate incoming data. If the data is invalid, the function immediately exits or throws an error. This prevents nested `if/else` logic and stops bad data from propagating deeper into the application.
+2. **Input Validation:** Never trusting user input. Always sanitizing and validating data formats (e.g., ensuring a string is a valid email, or a number is positive) before processing.
+3. **Try/Catch Blocks:** Wrapping risky operations (like network requests, file reading, or database queries) in try/catch blocks so that if an external system fails, the program catches the exception rather than crashing entirely.
+4. **Custom Exceptions:** Throwing specific, descriptive errors (e.g., `InsufficientFundsException`) rather than generic system errors, making debugging significantly easier.
+
+---
+
+## Code Example: Before and After (C#)
+
+### The Messy Code (No Error Handling)
+This function attempts to process a refund for a transaction. It assumes the "happy path"—that all inputs are perfectly valid. 
+
+```csharp
+public class RefundProcessor 
+{
+    // Issue: No error handling. What if transaction is null? What if amount is negative?
+    public void ProcessRefund(Transaction currentTransaction, double refundAmount) 
+    {
+        // If currentTransaction is null, this will throw a fatal NullReferenceException.
+        // If refundAmount is negative, this will accidentally ADD money to the total.
+        currentTransaction.Total -= refundAmount;
+        
+        // Blindly updates status even if the logic above caused an unintended state.
+        currentTransaction.Status = "REFUNDED";
+        
+        Database.Save(currentTransaction);
+        System.Console.WriteLine("Refund processed.");
+    }
+}
+```
+
+### The Clean, Refactored Code (Using Guard Clauses)
+By implementing Guard Clauses, the function protects itself from invalid inputs and edge cases immediately.
+
+```csharp
+public class RefundProcessor 
+{
+    public void ProcessRefund(Transaction currentTransaction, double refundAmount) 
+    {
+        // 1. Guard Clause: Check for null objects
+        if (currentTransaction == null) 
+        {
+            throw new ArgumentNullException(nameof(currentTransaction), "Transaction cannot be null.");
+        }
+
+        // 2. Guard Clause: Check for illogical negative numbers
+        if (refundAmount <= 0) 
+        {
+            throw new ArgumentException("Refund amount must be greater than zero.", nameof(refundAmount));
+        }
+
+        // 3. Guard Clause: Domain logic edge case
+        if (refundAmount > currentTransaction.Total) 
+        {
+            throw new InvalidOperationException("Cannot refund more than the original transaction total.");
+        }
+
+        // If it passes all guards, it is safe to execute the core logic.
+        currentTransaction.Total -= refundAmount;
+        currentTransaction.Status = "REFUNDED";
+        
+        Database.Save(currentTransaction);
+        System.Console.WriteLine($"Successfully refunded: ${refundAmount:F2}");
+    }
+}
+```
+
+---
+
+## Reflections
+
+### What was the issue with the original code?
+The original code suffered from "Happy Path Programming." It completely ignored edge cases, assuming that the `currentTransaction` object would always exist and that the `refundAmount` would always be a logical number. This is dangerous because passing a `null` transaction would trigger a catastrophic `NullReferenceException`, crashing the application. Even worse, passing a negative number would mathematically result in *adding* money to the transaction's total instead of subtracting it, silently corrupting the financial data without throwing any errors at all.
+
+### How does handling errors improve reliability?
+Handling errors directly improves reliability by making the codebase robust and predictable. By using Guard Clauses, the function immediately rejects bad data before it can cause harm. This protects the state of the application—such as preventing a database from saving a corrupted total. Furthermore, throwing specific, descriptive exceptions (like `ArgumentException` or `InvalidOperationException`) makes unit testing much more effective. Instead of tests mysteriously failing, they can assert that the correct exceptions are thrown for specific edge cases, ensuring the system behaves predictably under stress.
+
 
 
