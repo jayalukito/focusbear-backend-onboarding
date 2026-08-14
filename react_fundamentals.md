@@ -94,3 +94,26 @@ For example, instead of creating custom CSS for a button, I can write:
 <button className="rounded-lg bg-blue-600 px-5 py-2 text-white">
   Increment
 </button>
+
+```
+
+## What are the advantages of using Tailwind CSS?
+
+One advantage of Tailwind CSS is that it allows me to style components directly using utility classes without having to create a separate CSS class for every element.
+
+For example, instead of creating custom CSS for a button, I can write:
+
+```jsx
+<button className="rounded-lg bg-blue-600 px-5 py-2 text-white">
+  Increment
+</button>
+
+```
+## What are some potential pitfalls of using Tailwind CSS?
+
+One potential pitfall of Tailwind CSS is that the `className` can become very long when a component has many styles. This can make JSX harder to read and maintain.
+
+For example:
+
+```jsx
+className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700 active:scale-95 active:bg-blue-800"
