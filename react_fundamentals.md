@@ -117,3 +117,17 @@ For example:
 
 ```jsx
 className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700 active:scale-95 active:bg-blue-800"
+```
+
+## What are some common issues when working with lists in React?
+
+One common issue when working with lists in React is forgetting to provide a unique `key` for each item rendered using `.map()`.
+
+For example:
+
+```jsx
+items.map((item) => (
+  <li key={item.id}>
+    {item.text}
+  </li>
+))
