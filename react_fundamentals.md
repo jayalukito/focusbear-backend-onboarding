@@ -29,3 +29,42 @@ npm run dev
 I could see the styles applied in the browser, which confirmed that Tailwind was working correctly.
 
 Overall, the setup was straightforward once I followed the documentation for the current versions. The main lesson for me was to check the official documentation instead of relying on older tutorials, especially for tools like Tailwind CSS where the setup process can change between major versions.
+
+
+# What happens if we modify directly instead of using setState ?
+In React, state should not be modified directly.
+
+For example, if I have:
+
+```js
+const [count, setCount] = useState(0)
+```
+
+I should update it using:
+
+```js
+setCount(count + 1)
+```
+
+instead of trying to change the value directly.
+
+React uses the state update function to know that the state has changed and that the component may need to render again. If state is changed directly, React may not detect the update correctly, so the UI may not display the latest value.
+
+This becomes even more important when the state contains objects or arrays. Mutating them directly can lead to unexpected behavior because React often relies on changes in references to detect updates.
+
+For example, instead of modifying an object directly:
+
+```js
+user.name = 'John'
+```
+
+it is better to create a new object through the state setter:
+
+```js
+setUser({
+  ...user,
+  name: 'John',
+})
+```
+
+From this exercise, I learned that React state should be treated as read-only. I should always use the setter function provided by `useState` when I want to update a state value.
