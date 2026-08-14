@@ -31,7 +31,7 @@ I could see the styles applied in the browser, which confirmed that Tailwind was
 Overall, the setup was straightforward once I followed the documentation for the current versions. The main lesson for me was to check the official documentation instead of relying on older tutorials, especially for tools like Tailwind CSS where the setup process can change between major versions.
 
 
-# What happens if we modify directly instead of using setState ?
+## What happens if we modify directly instead of using setState ?
 In React, state should not be modified directly.
 
 For example, if I have:
@@ -83,3 +83,14 @@ For example:
 
 ```jsx
 <HelloWorld name="Cliff" />
+
+## What are the advantages of using Tailwind CSS?
+
+One advantage of Tailwind CSS is that it allows me to style components directly using utility classes without having to create a separate CSS class for every element.
+
+For example, instead of creating custom CSS for a button, I can write:
+
+```jsx
+<button className="rounded-lg bg-blue-600 px-5 py-2 text-white">
+  Increment
+</button>
