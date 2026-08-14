@@ -68,3 +68,18 @@ setUser({
 ```
 
 From this exercise, I learned that React state should be treated as read-only. I should always use the setter function provided by `useState` when I want to update a state value.
+
+## Why are components important in React?
+
+Components are important in React because they allow the user interface to be divided into smaller and reusable parts.
+
+Instead of writing the whole UI in one large file, I can separate different parts of the application into components. For example, a button, navigation bar, form, or profile card can each have their own component.
+
+This makes the code easier to read, maintain, and reuse. If the same UI element is needed in multiple places, I can use the same component instead of rewriting the same code.
+
+Components can also receive data through props. In this exercise, the `HelloWorld` component receives a `name` prop, which allows the displayed value to change depending on what is passed to the component.
+
+For example:
+
+```jsx
+<HelloWorld name="Cliff" />
