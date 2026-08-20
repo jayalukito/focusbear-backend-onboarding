@@ -133,3 +133,14 @@ items.map((item) => <li key={item.id}>{item.text}</li>);
 ## What are the advantages of client-side routing ?
 
 The fundamentals of client-side routing are about letting a web application change pages or views without requesting a completely new HTML document from the server each time.
+
+# Optimizing Performance with useMemo
+
+# Why is useMemo useful ?
+because it caches the result of an expensive calculation and process and only recalculates the process when a certain variable changes, reducing unecessary load during component rerendering
+# How does useMemo improve performance?
+useMemo caches the result of an expensive calculation and only recalculates it when its dependencies change, reducing unnecessary work during re-renders.
+# When should you avoid using useMemo?
+Avoid useMemo for simple or inexpensive calculations because memoization adds extra complexity and has its own small overhead.
+# What happens if you remove useMemo from your implementation?
+Without useMemo, the expensive calculation runs every time the component re-renders, even when the values it depends on have not changed.
