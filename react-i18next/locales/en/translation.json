@@ -1,0 +1,8 @@
+{
+  "title": "Internationalization Example",
+  "welcome": "Welcome to our application!",
+  "description": "This application supports multiple languages.",
+  "helloUser": "Hello, {{name}}!",
+  "english": "English",
+  "spanish": "Spanish"
+}
