@@ -15,7 +15,7 @@ and require a `tailwind.config.js` file with the `@tailwind base`, `@tailwind co
 However, the current Tailwind CSS setup with Vite is simpler. I only needed to install `tailwindcss` and `@tailwindcss/vite`, add the Tailwind plugin to the Vite configuration, and import Tailwind using:
 
 ```css
-@import "tailwindcss";
+@import 'tailwindcss';
 ```
 
 Another small challenge was understanding how React, Vite, and Tailwind work together. React is responsible for building the UI using components, Vite handles the development server and build process, and Tailwind provides utility classes for styling.
@@ -30,20 +30,20 @@ I could see the styles applied in the browser, which confirmed that Tailwind was
 
 Overall, the setup was straightforward once I followed the documentation for the current versions. The main lesson for me was to check the official documentation instead of relying on older tutorials, especially for tools like Tailwind CSS where the setup process can change between major versions.
 
-
 ## What happens if we modify directly instead of using setState ?
+
 In React, state should not be modified directly.
 
 For example, if I have:
 
 ```js
-const [count, setCount] = useState(0)
+const [count, setCount] = useState(0);
 ```
 
 I should update it using:
 
 ```js
-setCount(count + 1)
+setCount(count + 1);
 ```
 
 instead of trying to change the value directly.
@@ -55,7 +55,7 @@ This becomes even more important when the state contains objects or arrays. Muta
 For example, instead of modifying an object directly:
 
 ```js
-user.name = 'John'
+user.name = 'John';
 ```
 
 it is better to create a new object through the state setter:
@@ -64,7 +64,7 @@ it is better to create a new object through the state setter:
 setUser({
   ...user,
   name: 'John',
-})
+});
 ```
 
 From this exercise, I learned that React state should be treated as read-only. I should always use the setter function provided by `useState` when I want to update a state value.
@@ -81,7 +81,7 @@ Components can also receive data through props. In this exercise, the `HelloWorl
 
 For example:
 
-```jsx
+````jsx
 <HelloWorld name="Cliff" />
 
 ## What are the advantages of using Tailwind CSS?
@@ -95,7 +95,7 @@ For example, instead of creating custom CSS for a button, I can write:
   Increment
 </button>
 
-```
+````
 
 ## What are the advantages of using Tailwind CSS?
 
@@ -107,8 +107,8 @@ For example, instead of creating custom CSS for a button, I can write:
 <button className="rounded-lg bg-blue-600 px-5 py-2 text-white">
   Increment
 </button>
-
 ```
+
 ## What are some potential pitfalls of using Tailwind CSS?
 
 One potential pitfall of Tailwind CSS is that the `className` can become very long when a component has many styles. This can make JSX harder to read and maintain.
@@ -116,7 +116,8 @@ One potential pitfall of Tailwind CSS is that the `className` can become very lo
 For example:
 
 ```jsx
-className="rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700 active:scale-95 active:bg-blue-800"
+className =
+  'rounded-lg bg-blue-600 px-5 py-2 font-medium text-white transition hover:bg-blue-700 active:scale-95 active:bg-blue-800';
 ```
 
 ## What are some common issues when working with lists in React?
@@ -126,8 +127,9 @@ One common issue when working with lists in React is forgetting to provide a uni
 For example:
 
 ```jsx
-items.map((item) => (
-  <li key={item.id}>
-    {item.text}
-  </li>
-))
+items.map((item) => <li key={item.id}>{item.text}</li>);
+```
+
+## What are the advantages of client-side routing ?
+
+The fundamentals of client-side routing are about letting a web application change pages or views without requesting a completely new HTML document from the server each time.

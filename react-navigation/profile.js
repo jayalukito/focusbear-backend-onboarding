@@ -1,8 +1,8 @@
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 function Profile() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-slate-100">
+   <div className="flex min-h-screen flex-col items-center justify-center bg-slate-100">
       <div className="rounded-xl bg-white p-8 text-center shadow-lg">
         <h1 className="text-3xl font-bold text-slate-800">
           Profile
