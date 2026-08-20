@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import Profile from './pages/Profile'
+import Home from './react-navigation/Home'
+import Profile from './react-navigation/Profile'
 
 function App() {
   return (

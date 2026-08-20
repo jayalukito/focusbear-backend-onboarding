@@ -132,7 +132,7 @@ items.map((item) => <li key={item.id}>{item.text}</li>);
 
 ## What are the advantages of client-side routing ?
 
-The fundamentals of client-side routing are about letting a web application change pages or views without requesting a completely new HTML document from the server each time.
+The fundamentals of client-side routing are about letting a web application change pages or views without requesting a completely new HTML document from the server each time. This results in faster navigation and less full page reloads. While technically better for resources it is also beneficial for user experience having lower wait times and more responsive application
 
 # Optimizing Performance with useMemo
 
