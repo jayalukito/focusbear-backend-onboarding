@@ -3,14 +3,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   decrement,
   increment,
-  incrementByAmount,
   reset,
 } from './features/counter/counterSlice';
 
 function Counter() {
-  const count = useSelector((state) => state.counter.value);
+  const count = useSelector(
+    (state) => state.counter.value,
+  );
 
   const dispatch = useDispatch();
+
+  const getMessage = () => {
+    if (count < 0) {
+      return 'The counter is negative';
+    }
+
+    if (count === 0) {
+      return 'The counter is zero';
+    }
+
+    if (count <= 5) {
+      return 'The counter is getting bigger';
+    }
+
+    return 'The counter is high!';
+  };
 
   return (
     <div>
@@ -18,13 +35,19 @@ function Counter() {
 
       <h2>Count: {count}</h2>
 
-      <button onClick={() => dispatch(increment())}>Increment</button>
+      <p>{getMessage()}</p>
 
-      <button onClick={() => dispatch(decrement())}>Decrement</button>
+      <button onClick={() => dispatch(increment())}>
+        Increment
+      </button>
 
-      <button onClick={() => dispatch(reset())}>Reset</button>
+      <button onClick={() => dispatch(decrement())}>
+        Decrement
+      </button>
 
-      <button onClick={() => dispatch(incrementByAmount(5))}>Add 5</button>
+      <button onClick={() => dispatch(reset())}>
+        Reset
+      </button>
     </div>
   );
 }
