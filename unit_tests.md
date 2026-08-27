@@ -120,9 +120,55 @@ to prevent one test's mock history from affecting another test.
 Another pitfall is only testing the successful case. Asynchronous code should also be tested for loading and failure states, such as:
 
 ```js
-fetchUsers.mockRejectedValue(
-  new Error('API failed'),
-);
+fetchUsers.mockRejectedValue(new Error('API failed'));
 ```
 
 This helps ensure the component behaves correctly when the API request does not succeed.
+
+# Testing React Components with Jest & React Testing Library #97
+
+### What are the benefits of using React Testing Library instead of testing implementation details?
+
+React Testing Library encourages testing components based on what a user can see and interact with rather than testing the internal implementation of the component.
+
+For example, in my test I checked whether the message was visible using:
+
+```js
+expect(screen.getByText('Hello from React!')).toBeInTheDocument();
+```
+
+I also located the button based on its accessible role and text:
+
+```js
+const button = screen.getByRole('button', {
+  name: 'Change Message',
+});
+```
+
+This is better than testing internal details such as the component's state variable or CSS class names.
+
+If I later refactor how the component manages its state but the user-visible behavior remains the same, the test can still pass. This makes the test less dependent on implementation details and more focused on the expected behavior of the application.
+
+### What challenges did you encounter when simulating user interaction?
+
+One challenge was understanding that user interactions can be asynchronous.
+
+For example, I used:
+
+```js
+const user = userEvent.setup();
+
+await user.click(button);
+```
+
+The `await` is important because `userEvent` simulates user behavior more realistically and some interactions may cause asynchronous React state updates.
+
+After clicking the button, I then checked that React updated the displayed message:
+
+```js
+expect(screen.getByText('Button clicked!')).toBeInTheDocument();
+```
+
+Another challenge was learning how to locate elements in a way that represents how users interact with the application. Instead of selecting elements using implementation details such as IDs or class names, I used queries such as `getByText()` and `getByRole()`.
+
+This helped me understand that React Testing Library tests should focus on whether the component behaves correctly from the user's perspective rather than how the component is internally implemented.
